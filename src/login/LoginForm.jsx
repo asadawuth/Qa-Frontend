@@ -23,7 +23,6 @@ export default function LoginForm() {
     emailOrMobile: "",
     password: "",
   });
-
   const [error, setError] = useState({});
   const [errorEmailOrMobile, setErrorEmailOrMobile] = useState({});
 

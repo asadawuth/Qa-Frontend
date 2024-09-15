@@ -5,7 +5,13 @@ import { useState } from "react";
 import axios from "../config/axios";
 import EditTitleForm from "./EditTitleForm";
 
-export default function EditandDelete({ titleId, setAllTitle, allTitle }) {
+export default function EditandDelete({
+  titleId,
+  setAllTitle,
+  allTitle,
+  currentPage,
+  setTotalPages,
+}) {
   const [openModelDelete, setOpenDelete] = useState(false);
   const [openModelEdit, setOpenModelEdit] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -20,7 +26,10 @@ export default function EditandDelete({ titleId, setAllTitle, allTitle }) {
   const handleDeleteTitle = async () => {
     try {
       await axios.delete(`/title/${titleId}`);
-      setAllTitle(allTitle.filter((el) => el.id !== titleId));
+      // setAllTitle(allTitle.filter((el) => el.id !== titleId));
+      const response = await axios.get(`/title/titles?_page=${currentPage}`);
+      setAllTitle(response.data.titleInPage);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.log(error);
     }

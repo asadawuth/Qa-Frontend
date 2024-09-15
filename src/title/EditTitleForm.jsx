@@ -14,7 +14,7 @@ export default function EditTitleForm({
   const [file, setFile] = useState();
   const [oldData, setOldData] = useState({});
   const [titleMessageInput, setTitleMessageInput] = useState({
-    titleMessage: "",
+    titleMessage: oldData.titleMessage || "",
   });
   // V.
   const [error, setError] = useState({});
@@ -25,11 +25,17 @@ export default function EditTitleForm({
       .get(`/title/get/${titleId}`)
       .then((res) => {
         setOldData(res.data);
+
+        setTitleMessageInput({
+          ...titleMessageInput,
+          titleMessage: res.data.titleMessage,
+        });
       })
       .catch((err) => console.log(err));
   }, [titleId]);
 
   //console.log(oldData);
+  // console.log("oldData.titleMessage", oldData.titleMessage);
 
   const handleEditTitle = async (e) => {
     e.preventDefault();
@@ -74,9 +80,9 @@ export default function EditTitleForm({
       ...titleMessageInput,
       [e.target.name]: e.target.value,
     });
-    if (errorTextTitle) {
-      setErrorTextTitle(false);
-    } //เกิ
+    // if (errorTextTitle) {
+    //   setErrorTextTitle(false);
+    // }
   };
 
   return (
@@ -134,7 +140,7 @@ export default function EditTitleForm({
             name="titleMessage"
             onChange={titleText}
             value={titleMessageInput.titleMessage}
-            placeholder={oldData.titleMessage}
+            // placeholder={oldData.titleMessage}
           />
           {/* // V. */}
           {error.titleMessage && (

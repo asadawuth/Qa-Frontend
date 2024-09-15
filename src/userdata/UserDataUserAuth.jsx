@@ -142,34 +142,41 @@ export default function UserDataUserAuth() {
               <div>Sex : {userProFile.sex}</div>
               <div>Nationality : {userProFile.nationality}</div>
               <div>Address : {userProFile.address}</div>
+              <div>Map : {userProFile.pinMapGps}</div>
             </div>
             {userProFile.id === authUser.id && (
               <>
                 <div className="flex flex-col gap-2">
-                  <div className="">
-                    <button
-                      className={`${styleButton} text-black pl-4`}
-                      onClick={() => setOpenModel(true)}
-                    >
-                      UpdatauserData
-                    </button>
+                  <div className="flex gap-8 pb-8">
+                    <div className="">
+                      <button
+                        className={`${styleButton} text-black pl-4`}
+                        onClick={() => setOpenModel(true)}
+                      >
+                        UpdatauserData
+                      </button>
+                    </div>
+                    <div className="">
+                      <Link to={`/userdata/history/${userId}`}>
+                        <button className="animate-bounce focus:animate-none hover:animate-none inline-flex text-md font-medium bg-indigo-900 mt-3 px-8 py-2 rounded-lg tracking-wide text-white">
+                          History
+                        </button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </>
             )}
-            <div>
-              <Link to={`/userdata/history/${userId}`}>
-                <button className="animate-bounce focus:animate-none hover:animate-none inline-flex text-md font-medium bg-indigo-900 mt-3 px-8 py-2 rounded-lg tracking-wide text-white">
-                  History
-                </button>
-              </Link>
-            </div>
+
             <Model
               title="ChangeYourData"
               open={openModel}
               onClose={() => setOpenModel(false)}
             >
-              <UpdateDataForm onSuccess={() => setOpenModel(false)} />
+              <UpdateDataForm
+                onSuccess={() => setOpenModel(false)}
+                userId={userId}
+              />
             </Model>
           </div>
         </>

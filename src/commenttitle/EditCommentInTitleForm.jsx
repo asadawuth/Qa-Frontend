@@ -12,14 +12,16 @@ export default function EditCommentInTitleForm({
   // allCommentinTitle,
   // setAllCommentinTitle,
 }) {
-  const [messageComment, setMessageComment] = useState({ message: "" });
+  const [messageComment, setMessageComment] = useState({
+    message: oldText || "",
+  });
   const [filesComment, setFileComment] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const inputImagesComment = useRef([]); // หลายรูป Array
   const [loading, setLoading] = useState(false);
   // const { titleId } = useParams();
 
-  console.log(commentId);
+  console.log(oldText);
 
   useEffect(() => {
     // Directly use storyImage URLs if they're valid URLs กัน Run ไม่เลิก
@@ -95,7 +97,7 @@ export default function EditCommentInTitleForm({
               name="message"
               onChange={textComment}
               value={messageComment.message}
-              placeholder={oldText}
+              // placeholder={oldText}
             />
           </div>
           <CreateImageComment />

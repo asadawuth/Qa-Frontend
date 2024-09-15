@@ -1,23 +1,5 @@
 import { useState, useRef } from "react";
 import LoadingWeb from "../component/LoadingWeb";
-// V.
-// import { createTitleSchema } from "../validate/validate";
-// V.
-
-// V.
-// const validateCreateForm = (input) => {
-//   const { error } = createTitleSchema.validate(input, { abortEarly: false });
-//   if (error) {
-//     const result = error.details.reduce((acc, el) => {
-//       const { message, path } = el;
-//       acc[path[0]] = message; // Store the error message for each field
-//       return acc;
-//     }, {});
-//     return result;
-//   }
-//   return null; // No errors
-// };
-// V.
 
 export default function CreateTitleForm({ onSuccess, onSubmit }) {
   const [loading, setLoading] = useState(false);

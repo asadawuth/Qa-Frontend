@@ -12,11 +12,25 @@ export default function CreateCommentForm({
   const [selectedFiles, setSelectedFiles] = useState([]);
   const inputImagesComment = useRef([]); // หลายรูป Array
   const [loading, setLoading] = useState(false);
-
+  // V.
+  const [error, setError] = useState({});
+  // V.
   ///////////////////////////////////
 
   const handleSumitForm = async (e) => {
     e.preventDefault();
+
+    let newError = {};
+    if (!messageComment.message.trim() && selectedFiles.length < 1) {
+      newError.message = "Please provide a text or image.";
+    }
+    if (Object.keys(newError).length > 0) {
+      setError(newError);
+      return;
+    } else {
+      setError({});
+    }
+
     try {
       const formdata = new FormData();
       if (messageComment) {
@@ -112,6 +126,11 @@ export default function CreateCommentForm({
           </div>
         </div>
         <CreateCommentButton />
+        {/* // V. */}
+        {error.message && (
+          <span className="text-red-500 text-center">{error.message}</span>
+        )}
+        {/* // V. */}
       </form>
     </>
   );

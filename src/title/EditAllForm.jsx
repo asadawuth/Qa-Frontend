@@ -9,10 +9,11 @@ export default function EditAllForm({
   storyImage,
   updatedTitle,
 }) {
+  // const [oldData, setOldData] = useState({});
   const [loading, setLoading] = useState(false);
   const [titleInputAndStorytest, setTitleInputAndStorytest] = useState({
-    titlePost: "",
-    storyTest: "",
+    titlePost: titletext || "",
+    storyTest: storytext || "",
   });
   const [file, setFile] = useState(null);
   const [fileComment, setFileComment] = useState([]);
@@ -156,7 +157,7 @@ export default function EditAllForm({
               name="titlePost"
               onChange={titleAndStoryText}
               value={titleInputAndStorytest.titlePost || ""}
-              placeholder={titletext}
+              // placeholder={titletext}
             />
             {/* // V. */}
             {error.titlePost && (

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChangeDataInput from "./ChangeDataInput";
 import TextUpdateDataError from "./TextUpdateDataError";
 import { useAuth } from "../hook/use-auth";
 import { updateDataSchema } from "../validate/validate";
+import axios from "../config/axios";
 
 const validateUpdateUser = (input) => {
   const { error } = updateDataSchema.validate(input, { abortEarly: false });
@@ -16,7 +17,7 @@ const validateUpdateUser = (input) => {
   }
 };
 
-export default function UpdateDataForm({ onSuccess }) {
+export default function UpdateDataForm({ onSuccess, userId }) {
   const [inputUpdateData, setInputUpdateData] = useState({
     firstName: "",
     lastName: "",
@@ -29,8 +30,27 @@ export default function UpdateDataForm({ onSuccess }) {
     pinMapGps: "",
   });
   const [error, setError] = useState({});
-  const [success, setSuccess] = useState({});
   const { updateUserData } = useAuth();
+
+  useEffect(() => {
+    axios
+      .get(`/user/${userId}`)
+      .then((res) => {
+        setInputUpdateData({
+          ...inputUpdateData,
+          firstName: res.data.user.firstName,
+          lastName: res.data.user.lastName,
+          nickName: res.data.user.nickName,
+          tel: res.data.user.tel,
+          age: res.data.user.age,
+          sex: res.data.user.sex,
+          nationality: res.data.user.nationality,
+          address: res.data.user.address,
+          pinMapGps: res.data.user.pinMapGps,
+        });
+      })
+      .catch((err) => console.log(err));
+  }, [userId]);
 
   const handleChangeInput = (e) => {
     setInputUpdateData({
@@ -47,7 +67,8 @@ export default function UpdateDataForm({ onSuccess }) {
     } else {
       try {
         await updateUserData(inputUpdateData);
-        setSuccess({ message: "Change success." });
+
+        setError({});
         onSuccess();
       } catch (error) {
         if (error.response && error.response.data.message) {
@@ -72,7 +93,6 @@ export default function UpdateDataForm({ onSuccess }) {
         value={inputUpdateData.firstName}
         hasError={error.firstName}
       />
-      <span className="text-green-800">{success.message}</span>
       {error.firstName && <TextUpdateDataError message={error.firstName} />}
       <ChangeDataInput
         placeholder="LastName"
@@ -81,7 +101,7 @@ export default function UpdateDataForm({ onSuccess }) {
         onChange={handleChangeInput}
         hasError={error.lastName}
       />
-      <span className="text-green-800">{success.message}</span>
+
       {error.lastName && <TextUpdateDataError message={error.lastName} />}
       <ChangeDataInput
         placeholder="NickName"
@@ -90,7 +110,7 @@ export default function UpdateDataForm({ onSuccess }) {
         value={inputUpdateData.nickName}
         hasError={error.nickName}
       />
-      <span className="text-green-800">{success.message}</span>
+
       {error.nickName && <TextUpdateDataError message={error.nickName} />}
       <ChangeDataInput
         placeholder="Tel"
@@ -99,7 +119,7 @@ export default function UpdateDataForm({ onSuccess }) {
         value={inputUpdateData.tel}
         hasError={error.tel}
       />
-      <span className="text-green-800">{success.message}</span>
+
       {error.tel && <TextUpdateDataError message={error.tel} />}
       <ChangeDataInput
         placeholder="Age"
@@ -108,7 +128,7 @@ export default function UpdateDataForm({ onSuccess }) {
         value={inputUpdateData.age}
         hasError={error.age}
       />
-      <span className="text-green-800">{success.message}</span>
+
       {error.age && <TextUpdateDataError message={error.age} />}
       <ChangeDataInput
         placeholder="Sex your can specify only Male,Female,Thirdgender"
@@ -117,7 +137,7 @@ export default function UpdateDataForm({ onSuccess }) {
         value={inputUpdateData.sex}
         hasError={error.sex}
       />
-      <span className="text-green-800">{success.message}</span>
+
       {error.sex && <TextUpdateDataError message={error.sex} />}
       <ChangeDataInput
         placeholder="Nationality"
@@ -126,7 +146,6 @@ export default function UpdateDataForm({ onSuccess }) {
         value={inputUpdateData.nationality}
         hasError={error.nationality}
       />
-      <span className="text-green-800">{success.message}</span>
       {error.nationality && <TextUpdateDataError message={error.nationality} />}
       <ChangeDataInput
         placeholder="Address"
